@@ -1,5 +1,24 @@
+"use client";
 
-import { ArrowRight, Bot, Download, Mail } from "lucide-react";
+import { useState } from "react";
+import {
+  ArrowDownRight,
+  ArrowRight,
+  ArrowUpRight,
+  Bot,
+  BriefcaseBusiness,
+  Check,
+  Code2,
+  Cpu,
+  Download,
+  GraduationCap,
+  Mail,
+  Menu,
+  Send,
+  Sparkles,
+  X,
+  Zap,
+} from "lucide-react";
 
 const projects = [
   {
@@ -8,7 +27,11 @@ const projects = [
     title: "Enterprise Service Agent",
     description:
       "An enterprise AI-agent solution focused on employee-service workflows, onboarding automation, and process orchestration.",
-    technologies: ["Copilot Studio", "Power Automate", "Dataverse"],
+    tags: ["Copilot Studio", "Power Automate", "Dataverse"],
+    icon: BriefcaseBusiness,
+    accent: "blue",
+    details:
+      "Designed around employee-service workflows, including onboarding activities, resume-screening workflow components, structured data storage, and Microsoft Teams notifications.",
   },
   {
     number: "02",
@@ -16,7 +39,11 @@ const projects = [
     title: "Predictive Analyst AI Agent",
     description:
       "A data-analysis and forecasting solution designed to turn sales spreadsheets into forecasts and structured reports.",
-    technologies: ["Python", "Machine Learning", "LLM Integration"],
+    tags: ["Python", "Machine Learning", "LLM Integration"],
+    icon: Cpu,
+    accent: "cyan",
+    details:
+      "A workflow for ingesting spreadsheet data, preparing it for analysis, generating forecasts, and presenting results through structured business reports.",
   },
   {
     number: "03",
@@ -24,7 +51,11 @@ const projects = [
     title: "Machine Failure Detection",
     description:
       "A machine-learning project exploring sensor data and classification models to identify potential machine failures.",
-    technologies: ["Python", "Random Forest", "Flask"],
+    tags: ["Python", "Random Forest", "Flask"],
+    icon: Zap,
+    accent: "violet",
+    details:
+      "Academic/industrial project focused on sensor-data processing, feature engineering, classification approaches, and a Flask/Dash interface.",
   },
   {
     number: "04",
@@ -32,436 +63,353 @@ const projects = [
     title: "Automated Lighting Control",
     description:
       "An IoT project using motion sensing and embedded control for automated lighting, with manual override functionality.",
-    technologies: ["Arduino Uno", "Embedded C", "PIR Sensor"],
+    tags: ["Arduino Uno", "Embedded C", "PIR Sensor"],
+    icon: Sparkles,
+    accent: "blue",
+    details:
+      "A motion-sensing lighting system using an Arduino Uno, PIR sensor, Bluetooth control, and a manual override.",
+  },
+  {
+    number: "05",
+    category: "PYTHON APPLICATION",
+    title: "Weather App",
+    description:
+      "A Python application that retrieves weather information from a weather API and processes the response.",
+    tags: ["Python", "Requests", "JSON"],
+    icon: Code2,
+    accent: "cyan",
+    details:
+      "A small API-driven application using HTTP requests and JSON data handling to present weather information.",
   },
 ];
 
 const skills = [
-  "Agentic AI",
-  "Generative AI",
-  "Azure AI Foundry",
-  "Azure OpenAI",
-  "Microsoft Copilot Studio",
-  "Power Automate",
-  "Power Apps",
-  "Dataverse",
-  "Python",
-  "Machine Learning",
-  "SQL",
-  "React",
-  "FastAPI",
-  "Streamlit",
-  "Git",
+  { title: "AI & Agentic Systems", items: ["AI Agents", "Agentic AI", "Generative AI", "LLM Integration", "Machine Learning"] },
+  { title: "Microsoft & Azure", items: ["Azure AI Foundry", "Azure OpenAI", "Copilot Studio", "Power Automate", "Power Apps", "Dataverse", "Microsoft Teams", "Entra ID", "Adaptive Cards", "Outlook"] },
+  { title: "Programming", items: ["Python", "C/C++", "SQL", "JavaScript"] },
+  { title: "Web & Data", items: ["HTML/CSS", "ReactJS", "MySQL", "ETL", "Data Pipelines", "Data Schemas"] },
+  { title: "Libraries & Frameworks", items: ["NumPy", "Pandas", "Matplotlib", "Seaborn", "Flask", "FastAPI", "Streamlit"] },
+  { title: "Tools", items: ["Git", "GitHub", "Power BI", "Excel", "Figma", "MySQL Workbench", "Arduino Uno"] },
 ];
 
-export default function HomePage() {
+const certifications = [
+  { name: "Microsoft Certified: Azure AI Apps and Agents Developer Associate", issuer: "Microsoft", date: "2026" },
+  { name: "Microsoft AI and ML Engineering", issuer: "Coursera", date: "March 2025" },
+  { name: "Green Skills and Artificial Intelligence", issuer: "Skills4Future Program", date: "September 2025" },
+];
+
+
+const chatAnswers: { match: string[]; answer: string }[] = [
+  {
+    match: ["enterprise service agent", "esa", "onboarding agent"],
+    answer:
+      "The Enterprise Service Agent automates employee-service workflows using Copilot Studio, Power Automate, and Dataverse. Its workflows include onboarding activities, resume-screening components, and Microsoft Teams notifications.",
+  },
+  {
+    match: ["predictive analyst", "sales forecasting", "forecast"],
+    answer:
+      "The Predictive Analyst AI Agent analyzes sales spreadsheets, prepares data for forecasting, and presents results in structured business reports. Its work combines Python, machine learning, and LLM integration.",
+  },
+  {
+    match: ["machine failure", "failure detection", "random forest"],
+    answer:
+      "Machine Failure Detection is a machine-learning project that uses sensor data, feature engineering, and classification models to explore potential machine failures. It includes a Flask/Dash interface.",
+  },
+  {
+    match: ["lighting control", "iot", "arduino", "embedded"],
+    answer:
+      "The Automated Lighting Control project uses an Arduino Uno, a PIR motion sensor, Embedded C, and Bluetooth control. It also supports manual override.",
+  },
+  {
+    match: ["weather app", "weather application"],
+    answer:
+      "The Weather App is a Python application that retrieves weather information through an API and processes the response using Requests and JSON.",
+  },
+  {
+    match: ["project", "projects", "portfolio", "my work"],
+    answer:
+      "Prajwal's projects include the Enterprise Service Agent, Predictive Analyst AI Agent, Machine Failure Detection, Automated Lighting Control, and Weather App. Which one would you like to explore?",
+  },
+  {
+    match: ["skill", "skills", "technology", "technologies", "tech stack", "tools"],
+    answer:
+      "Prajwal works with AI agents, Generative AI, Azure AI Foundry, Azure OpenAI, Copilot Studio, Power Automate, Dataverse, Python, machine learning, SQL, and ReactJS.",
+  },
+  {
+    match: ["experience", "job", "company", "employer"],
+    answer:
+      "Prajwal is an AI Engineer at Encloud Tech Solutions in Pune. His work includes enterprise AI-agent workflows, onboarding automation, resume-screening components, and Microsoft service integrations.",
+  },
+  {
+    match: ["resume", "cv"],
+    answer:
+      "You can view or download Prajwal's resume using the Download Resume button near the top of the portfolio.",
+  },
+  {
+    match: ["contact", "email", "reach", "linkedin"],
+    answer:
+      "You can email Prajwal at prajwaldeotare673@gmail.com or connect with him on LinkedIn at linkedin.com/in/prajwal-deotare.",
+  },
+  {
+    match: ["education", "degree", "university", "graduation"],
+    answer:
+      "Prajwal studied B.Tech in Computer Science & Engineering at Vishwakarma University, Pune, from 2022 to 2026.",
+  },
+  {
+    match: ["certification", "certifications", "certified"],
+    answer:
+      "Prajwal's listed certifications include Microsoft Certified: Azure AI Apps and Agents Developer Associate, Microsoft AI and ML Engineering from Coursera, and Green Skills and Artificial Intelligence through the Skills4Future Program.",
+  },
+];
+
+
+function NetworkBackdrop() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#07111f] text-white">
-      {/* Navigation */}
-      <header className="sticky top-0 z-40 border-b border-white/[0.07] bg-[#07111f]/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <a href="#home" className="text-xl font-bold tracking-tight">
-            PD<span className="text-blue-400">.</span>
-          </a>
+    <div className="network-backdrop" aria-hidden="true">
+      <div className="network-grid" />
+      <svg className="network-lines" viewBox="0 0 900 650" fill="none" preserveAspectRatio="xMidYMid slice">
+        <path d="M80 180 L210 110 L330 190 L470 90 L590 180 L760 105" />
+        <path d="M80 180 L170 340 L330 190 L420 360 L590 180 L720 330 L820 230" />
+        <path d="M170 340 L250 510 L420 360 L520 520 L720 330 L790 500" />
+        <path d="M210 110 L250 510 M470 90 L520 520 M760 105 L790 500" />
+        {[["80","180"],["210","110"],["330","190"],["470","90"],["590","180"],["760","105"],["170","340"],["420","360"],["720","330"],["250","510"],["520","520"],["790","500"],["820","230"]].map(([cx,cy],i)=>(
+          <circle key={i} cx={cx} cy={cy} r={i%3===0?4:2.5} />
+        ))}
+      </svg>
+      <div className="orb orb-one" />
+      <div className="orb orb-two" />
+    </div>
+  );
+}
 
-          <nav className="hidden items-center gap-7 text-sm text-slate-300 md:flex">
-            <a href="#about" className="transition hover:text-blue-400">
-              About
-            </a>
-            <a href="#projects" className="transition hover:text-blue-400">
-              Projects
-            </a>
-            <a href="#skills" className="transition hover:text-blue-400">
-              Skills
-            </a>
-            <a href="#experience" className="transition hover:text-blue-400">
-              Experience
-            </a>
-            <a href="#contact" className="transition hover:text-blue-400">
-              Contact
-            </a>
-          </nav>
+function SectionHeading({ eyebrow, title, note }: { eyebrow: string; title: string; note?: string }) {
+  return (
+    <div className="section-heading">
+      <div>
+        <p className="eyebrow">{eyebrow}</p>
+        <h2>{title}</h2>
+      </div>
+      {note && <p className="section-note">{note}</p>}
+    </div>
+  );
+}
 
-          <a
-            href="mailto:prajwaldeotare673@gmail.com"
-            className="rounded-lg border border-blue-400/40 px-4 py-2 text-sm text-blue-300 transition hover:bg-blue-400/10"
-          >
-            Let&apos;s Talk ↗
-          </a>
-        </div>
+export default function HomePage() {
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatInput, setChatInput] = useState("");
+  const [chatMessages, setChatMessages] = useState<{ from: "assistant" | "user"; text: string }[]>([
+    { from: "assistant", text: "Hi! I’m the portfolio assistant. Ask me about Prajwal’s projects, skills, experience, or how to get in touch." },
+  ]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  function sendMessage() {
+    const question = chatInput.trim();
+    if (!question) return;
+    const lower = question.toLowerCase();
+    const found = chatAnswers.find((entry) => entry.match.some((term) => lower.includes(term)));
+    const answer = found?.answer ?? "I can help with the projects, technical skills, experience, education, resume, and contact details shown on this portfolio. Try asking about one of those topics.";
+    setChatMessages((messages) => [...messages, { from: "user", text: question }, { from: "assistant", text: answer }]);
+    setChatInput("");
+  }
+
+  const navItems = [
+    ["About", "#about"],
+    ["Projects", "#projects"],
+    ["Skills", "#skills"],
+    ["Experience", "#experience"],
+    ["Contact", "#contact"],
+  ];
+
+  return (
+    <main className="site-shell">
+      <NetworkBackdrop />
+      <header className="site-header">
+        <a className="brand" href="#home" aria-label="Prajwal Deotare home">PD<span>.</span></a>
+        <nav className={`main-nav ${mobileMenuOpen ? "nav-open" : ""}`} aria-label="Main navigation">
+          {navItems.map(([label, href]) => (
+            <a key={label} href={href} onClick={() => setMobileMenuOpen(false)}>{label}</a>
+          ))}
+        </nav>
+        <a className="header-cta" href="#contact">Let&apos;s Talk <ArrowUpRight size={15} /></a>
+        <button className="mobile-menu-button" onClick={() => setMobileMenuOpen((open) => !open)} aria-label={mobileMenuOpen ? "Close navigation" : "Open navigation"}>
+          {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+        </button>
       </header>
 
-      {/* Hero */}
-      <section
-        id="home"
-        className="relative mx-auto grid max-w-7xl items-center gap-14 px-6 py-20 md:grid-cols-[1.2fr_0.8fr] md:py-28"
-      >
-        <div className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-blue-600/10 blur-[120px]" />
-
-        <div className="relative z-10">
-          <div className="mb-7 inline-flex items-center gap-3 rounded-full border border-blue-400/20 bg-blue-400/[0.07] px-4 py-2 text-sm text-blue-300">
-            <span className="h-2 w-2 rounded-full bg-emerald-400" />
-            AI Engineer · Open to opportunities
-          </div>
-
-          <p className="mb-4 text-sm font-medium uppercase tracking-[0.28em] text-slate-400">
-            Hello, I&apos;m Prajwal Deotare
+      <section id="home" className="hero section-wrap">
+        <div className="hero-copy">
+          <div className="availability"><span className="status-dot" /> AI Engineer <span className="availability-divider">·</span> Open to opportunities</div>
+          <p className="hero-kicker">HELLO, I&apos;M PRAJWAL DEOTARE</p>
+          <h1>Building the next generation of <span>intelligent AI.</span></h1>
+          <p className="hero-description">
+            I build intelligent AI agents and LLM-powered solutions that automate business workflows and address practical operational problems. My focus spans Agentic AI, Generative AI, machine learning, and enterprise automation.
           </p>
-
-          <h1 className="max-w-3xl text-5xl font-bold leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl">
-            Building the next generation of{" "}
-            <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-              intelligent AI.
-            </span>
-          </h1>
-
-          <p className="mt-7 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
-            I build intelligent AI agents and LLM-powered solutions that
-            automate business workflows and address practical operational
-            problems. My focus spans Agentic AI, Generative AI, machine
-            learning, and enterprise automation.
-          </p>
-
-          <div className="mt-9 flex flex-wrap gap-4">
-            <a
-              href="#projects"
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3.5 font-semibold transition hover:bg-blue-500"
-            >
-              Explore Projects <ArrowRight size={18} />
-            </a>
-
-            <a
-              href="/resume/Prajwal-Deotare-Resume.pdf"
-              download
-              className="inline-flex items-center gap-2 rounded-lg border border-white/15 px-6 py-3.5 font-semibold transition hover:border-blue-400/60 hover:bg-white/[0.04]"
-            >
-              Download Resume <Download size={18} />
-            </a>
+          <div className="hero-actions">
+            <a className="button button-primary" href="#projects">Explore Projects <ArrowRight size={18} /></a>
+            <a className="button button-secondary" href="/resume/Prajwal-Deotare-Resume.pdf" target="_blank" rel="noreferrer">Download Resume <Download size={17} /></a>
           </div>
-
-          {/* Social links */}
-          <div className="mt-10 flex flex-wrap items-center gap-5 text-sm text-slate-400">
-            <a
-              href="https://www.linkedin.com/in/prajwal-deotare"
-              target="_blank"
-              rel="noreferrer"
-              className="transition hover:text-blue-400"
-            >
-              LinkedIn ↗
-            </a>
-
-            <a
-              href="https://github.com/Prajwal-Deotare"
-              target="_blank"
-              rel="noreferrer"
-              className="transition hover:text-blue-400"
-            >
-              GitHub ↗
-            </a>
-
-            <a
-              href="mailto:prajwaldeotare673@gmail.com"
-              className="transition hover:text-blue-400"
-            >
-              Email
-            </a>
-
-            <span className="h-5 w-px bg-white/15" />
+          <div className="hero-links">
+            <a href="https://www.linkedin.com/in/prajwal-deotare" target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={13} /></a>
+            <a href="https://github.com/Prajwal-Deotare" target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={13} /></a>
+            <a href="mailto:prajwaldeotare673@gmail.com">Email</a>
             <span>Pune, India</span>
           </div>
+          <div className="hero-scroll"><span /> SCROLL TO EXPLORE <ArrowDownRight size={15} /></div>
         </div>
 
-        {/* Profile photo */}
-        <div className="relative mx-auto w-full max-w-md">
-          <div className="absolute inset-5 rounded-full bg-blue-500/20 blur-[90px]" />
-
-          <div className="relative rounded-[2rem] border border-blue-300/20 bg-gradient-to-b from-blue-400/10 to-transparent p-3 shadow-2xl shadow-blue-950/40">
-            <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#101d2e]">
-              <img
-                src="/images/profile.jpg"
-                alt="Portrait of Prajwal Deotare"
-                className="aspect-[4/5] w-full object-cover"
-              />
-            </div>
-
-            <div className="absolute -bottom-5 -left-5 rounded-xl border border-white/10 bg-[#101d2e] px-5 py-4 shadow-xl">
-              <p className="text-xs uppercase tracking-widest text-slate-400">
-                Focus
-              </p>
-              <p className="mt-1 font-semibold text-blue-300">
-                AI Agents &amp; Automation
-              </p>
-            </div>
-
-            <div className="absolute -right-3 top-10 rounded-xl border border-white/10 bg-[#101d2e] p-3 shadow-xl">
-              <Bot size={27} className="text-blue-400" />
-            </div>
+        <div className="hero-visual">
+          <div className="visual-orbit orbit-a" />
+          <div className="visual-orbit orbit-b" />
+          <div className="visual-index"><span>AI / 01</span><span>ENGINEERING</span></div>
+          <div className="portrait-frame">
+            <div className="portrait-glow" />
+            <img src="/images/profile.jpg" alt="Portrait of Prajwal Deotare" />
+            <div className="portrait-shade" />
+            <div className="portrait-label"><span className="label-pulse" /> AI ENGINEER <span className="label-separator">/</span> PUNE, INDIA</div>
           </div>
+          <div className="floating-chip chip-top"><span className="chip-icon"><Bot size={18} /></span><span><small>BUILDING WITH</small><strong>Agentic AI</strong></span></div>
+          <div className="floating-chip chip-bottom"><span className="chip-icon cyan"><Cpu size={18} /></span><span><small>FOCUS</small><strong>AI Agents &amp; Automation</strong></span></div>
+          <div className="visual-caption">INTELLIGENCE, ENGINEERED.</div>
         </div>
       </section>
 
-      {/* About */}
-      <section
-        id="about"
-        className="border-y border-white/[0.07] bg-white/[0.02]"
-      >
-        <div className="mx-auto grid max-w-7xl gap-8 px-6 py-16 md:grid-cols-[0.7fr_1.3fr] md:py-20">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-400">
-              About Me
-            </p>
-            <h2 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl">
-              AI engineering with a focus on real business problems.
-            </h2>
-          </div>
-
-          <div className="space-y-5 text-base leading-8 text-slate-300">
-            <p>
-              My work brings together AI agents, large language models,
-              machine learning, and business-process automation to help
-              simplify operational workflows.
-            </p>
-            <p>
-              I work with Microsoft AI and Power Platform technologies,
-              connecting services, structured business data, and automated
-              workflows to build practical enterprise solutions.
-            </p>
-            <p>
-              I am interested in developing reliable AI systems that do more
-              than answer questions: systems that help users take action,
-              coordinate tasks, and make better-informed decisions.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Projects */}
-      <section id="projects" className="mx-auto max-w-7xl px-6 py-20 md:py-24">
-        <div className="flex flex-wrap items-end justify-between gap-5">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-400">
-              Selected Work
-            </p>
-            <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
-              Projects I&apos;ve worked on
-            </h2>
-          </div>
-
-          <p className="max-w-md text-sm leading-6 text-slate-400">
-            A selection of AI, machine-learning, and automation projects.
-            Detailed case studies can be added as we develop the portfolio.
-          </p>
-        </div>
-
-        <div className="mt-10 grid gap-5 md:grid-cols-2">
-          {projects.map((project) => (
-            <article
-              key={project.number}
-              className="group rounded-2xl border border-white/10 bg-[#0b1929] p-7 transition duration-300 hover:-translate-y-1 hover:border-blue-400/40 hover:bg-[#0e1e32]"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium tracking-widest text-blue-400">
-                  {project.number}
-                </span>
-                <ArrowRight
-                  size={20}
-                  className="text-slate-500 transition group-hover:translate-x-1 group-hover:text-blue-400"
-                />
-              </div>
-
-              <p className="mt-8 text-xs font-semibold tracking-[0.18em] text-slate-400">
-                {project.category}
-              </p>
-
-              <h3 className="mt-3 text-2xl font-semibold">{project.title}</h3>
-
-              <p className="mt-4 min-h-20 leading-7 text-slate-300">
-                {project.description}
-              </p>
-
-              <div className="mt-6 flex flex-wrap gap-2">
-                {project.technologies.map((technology) => (
-                  <span
-                    key={technology}
-                    className="rounded-md border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-slate-300"
-                  >
-                    {technology}
-                  </span>
-                ))}
-              </div>
-            </article>
+      <section className="signal-strip" aria-label="Areas of focus">
+        <div className="signal-track">
+          {["AGENTIC AI", "GENERATIVE AI", "LLM INTEGRATION", "MACHINE LEARNING", "ENTERPRISE AUTOMATION", "AGENTIC AI", "GENERATIVE AI", "LLM INTEGRATION"].map((item, i) => (
+            <span key={`${item}-${i}`}><Sparkles size={14} /> {item}</span>
           ))}
         </div>
       </section>
 
-      {/* Skills */}
-      <section
-        id="skills"
-        className="border-y border-white/[0.07] bg-white/[0.02]"
-      >
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-400">
-            Technical Toolkit
-          </p>
+      <section id="about" className="section-wrap section-block about-section">
+        <div className="about-label"><p className="eyebrow">ABOUT ME / 01</p><div className="about-decoration"><span /><span /><span /><span /><span /></div></div>
+        <div className="about-content">
+          <h2>AI engineering with a focus on <span>real business problems.</span></h2>
+          <div className="about-text">
+            <p>My work brings together AI agents, large language models, machine learning, and business-process automation to help simplify operational workflows.</p>
+            <p>I work with Microsoft AI and Power Platform technologies, connecting services, structured business data, and automated workflows to build practical enterprise solutions.</p>
+            <p>I am interested in developing reliable AI systems that do more than answer questions: systems that help users take action, coordinate tasks, and make better-informed decisions.</p>
+          </div>
+        </div>
+      </section>
 
-          <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
-            Technologies I work with
-          </h2>
+      <section id="projects" className="section-wrap section-block projects-section">
+        <SectionHeading eyebrow="SELECTED WORK / 02" title="Projects I’ve worked on" note="A selection of AI, machine-learning, and automation projects. Detailed case studies can be added as the portfolio evolves." />
+        <div className="project-grid">
+          {projects.map((project) => {
+            const Icon = project.icon;
+            return (
+              <article className={`project-card accent-${project.accent}`} key={project.number}>
+                <div className="project-card-top"><span>{project.number}</span><span className="project-icon"><Icon size={20} /></span></div>
+                <p className="project-category">{project.category}</p>
+                <h3>{project.title}</h3>
+                <p className="project-description">{project.description}</p>
+                <div className="project-detail"><p>{project.details}</p></div>
+                <div className="tag-row">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                <div className="project-card-footer"><span>PROJECT OVERVIEW</span><ArrowUpRight size={17} /></div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
 
-          <p className="mt-4 max-w-2xl leading-7 text-slate-300">
-            A selection of technologies relevant to my AI engineering and
-            enterprise automation work.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            {skills.map((skill) => (
-              <span
-                key={skill}
-                className="rounded-lg border border-white/10 bg-[#0b1929] px-4 py-3 text-sm text-slate-200 transition hover:border-blue-400/50 hover:text-blue-300"
-              >
-                {skill}
-              </span>
+      <section id="skills" className="section-block skills-section">
+        <div className="section-wrap">
+          <SectionHeading eyebrow="TECHNICAL TOOLKIT / 03" title="Technologies I work with" note="A selection of technologies relevant to my AI engineering and enterprise automation work." />
+          <div className="skills-grid">
+            {skills.map((group, index) => (
+              <article className="skill-group" key={group.title}>
+                <div className="skill-group-header"><span>0{index + 1}</span><h3>{group.title}</h3></div>
+                <div className="skill-tags">{group.items.map((item) => <span key={item}>{item}</span>)}</div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Experience */}
-      <section id="experience" className="mx-auto max-w-7xl px-6 py-20">
-        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-400">
-          Experience
-        </p>
-
-        <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
-          Professional journey
-        </h2>
-
-        <div className="mt-9 rounded-2xl border border-white/10 bg-[#0b1929] p-7 sm:p-9">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <h3 className="text-xl font-semibold">AI Engineer</h3>
-              <p className="mt-1 text-blue-300">Encloud Tech Solutions</p>
+      <section id="experience" className="section-wrap section-block experience-section">
+        <SectionHeading eyebrow="EXPERIENCE / 04" title="Professional journey" />
+        <article className="experience-card">
+          <div className="experience-marker"><BriefcaseBusiness size={19} /></div>
+          <div className="experience-main">
+            <div className="experience-head">
+              <div><h3>AI Engineer</h3><p>Encloud Tech Solutions <span>· Pune, India</span></p></div>
+              <span className="date-pill">April 2026 – Present</span>
             </div>
-
-            <span className="rounded-full border border-white/10 px-3 py-1.5 text-sm text-slate-400">
-              April 2026 – Present
-            </span>
+            <ul>
+              <li>Developed workflow automation and structured data solutions supporting enterprise AI-agent processes.</li>
+              <li>Contributed to employee-service workflows, onboarding automation, and integrations across Microsoft business applications.</li>
+              <li>Worked on resume-screening workflow components involving email intake, text extraction, candidate analysis, data storage, and HR notifications.</li>
+              <li>Worked with Microsoft services and components including Teams, Adaptive Cards, Outlook, Power Apps, and Dataverse.</li>
+            </ul>
           </div>
+        </article>
+      </section>
 
-          <ul className="mt-7 list-disc space-y-4 pl-5 text-sm leading-7 text-slate-300 sm:text-base">
-            <li>
-              Developed workflow automation and structured data solutions
-              supporting enterprise AI-agent processes.
-            </li>
-            <li>
-              Contributed to employee-service workflows, onboarding automation,
-              and integrations across Microsoft business applications.
-            </li>
-            <li>
-              Worked on resume-screening workflow components involving email
-              intake, text extraction, candidate analysis, data storage, and HR
-              notifications.
-            </li>
-          </ul>
+      <section className="section-wrap section-block credentials-section">
+        <div className="credential-column">
+          <p className="eyebrow">EDUCATION / 05</p>
+          <div className="credential-icon"><GraduationCap size={21} /></div>
+          <h3>B.Tech in Computer Science &amp; Engineering</h3>
+          <p>Vishwakarma University, Pune</p>
+          <span className="muted-text">2022 – 2026</span>
+        </div>
+        <div className="credential-column certifications-column">
+          <p className="eyebrow">CERTIFICATIONS / 06</p>
+          {certifications.map((cert) => (
+            <div className="certification-row" key={cert.name}>
+              <span className="cert-check"><Check size={15} /></span>
+              <div><h4>{cert.name}</h4><p>{cert.issuer} <span>· {cert.date}</span></p></div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Education */}
-      <section className="border-y border-white/[0.07] bg-white/[0.02]">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-2">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-400">
-              Education
-            </p>
-
-            <h2 className="mt-4 text-2xl font-bold">
-              B.Tech in Computer Science &amp; Engineering
-            </h2>
-
-            <p className="mt-3 text-slate-300">
-              Vishwakarma University, Pune
-            </p>
-
-            <p className="mt-2 text-sm text-slate-400">2023 – 2026</p>
-          </div>
-
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-400">
-              Current Direction
-            </p>
-
-            <h2 className="mt-4 text-2xl font-bold">
-              Building useful, action-oriented AI.
-            </h2>
-
-            <p className="mt-3 leading-7 text-slate-300">
-              Interested in AI engineering opportunities involving intelligent
-              agents, LLM integrations, machine learning, and enterprise
-              workflow automation.
-            </p>
+      <section className="section-wrap section-block highlights-section">
+        <div className="highlight-panel">
+          <div><p className="eyebrow">BEYOND THE BUILD</p><h2>Curiosity that goes beyond the screen.</h2></div>
+          <div className="highlight-content">
+            <div className="highlight-item"><span className="highlight-symbol">↗</span><div><h3>University-Level IoT Hackathon</h3><p>Second-place finish.</p></div></div>
+            <div className="highlight-item"><span className="highlight-symbol">⌘</span><div><h3>Research interests</h3><p>IoT-Based Home Automation; Blockchain-Based E-Voting System with Facial Recognition.</p></div></div>
           </div>
         </div>
       </section>
 
-      {/* Contact */}
-      <footer id="contact" className="mx-auto max-w-7xl px-6 py-16">
-        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-blue-400">
-          Get In Touch
-        </p>
-
-        <div className="mt-4 flex flex-col justify-between gap-8 md:flex-row md:items-end">
-          <div>
-            <h2 className="max-w-2xl text-3xl font-bold leading-tight sm:text-5xl">
-              Let&apos;s build something intelligent.
-            </h2>
-
-            <a
-              href="mailto:prajwaldeotare673@gmail.com"
-              className="mt-6 inline-flex items-center gap-2 text-lg text-blue-300 transition hover:text-blue-200"
-            >
-              <Mail size={19} />
-              prajwaldeotare673@gmail.com
-              <ArrowRight size={19} />
-            </a>
-          </div>
-
-          <div className="flex gap-4 text-sm text-slate-400">
-            <a
-              href="https://www.linkedin.com/in/prajwal-deotare"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-lg border border-white/10 px-4 py-3 transition hover:border-blue-400/50 hover:text-blue-300"
-            >
-              LinkedIn ↗
-            </a>
-
-            <a
-              href="https://github.com/Prajwal-Deotare"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-lg border border-white/10 px-4 py-3 transition hover:border-blue-400/50 hover:text-blue-300"
-            >
-              GitHub ↗
-            </a>
+      <section id="contact" className="contact-section">
+        <div className="section-wrap contact-inner">
+          <div><p className="eyebrow">GET IN TOUCH / 07</p><h2>Let’s build something <span>intelligent.</span></h2><p className="contact-copy">Interested in AI engineering, agentic systems, or enterprise automation? Let’s connect.</p></div>
+          <div className="contact-actions">
+            <a className="contact-email" href="mailto:prajwaldeotare673@gmail.com"><Mail size={19} /> prajwaldeotare673@gmail.com <ArrowRight size={18} /></a>
+            <div className="contact-socials"><a href="https://www.linkedin.com/in/prajwal-deotare" target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight size={14} /></a><a href="https://github.com/Prajwal-Deotare" target="_blank" rel="noreferrer">GitHub <ArrowUpRight size={14} /></a></div>
           </div>
         </div>
+      </section>
 
-        <div className="mt-14 flex flex-wrap justify-between gap-3 border-t border-white/10 pt-6 text-xs text-slate-500">
-          <p>© Prajwal Deotare</p>
-          <p>Designed and built with Next.js and Tailwind CSS</p>
-        </div>
+      <footer className="site-footer section-wrap">
+        <a className="brand" href="#home">PD<span>.</span></a>
+        <p>Designed and built with Next.js, React, and Tailwind CSS.</p>
+        <a href="#home">Back to top <ArrowUpRight size={14} /></a>
       </footer>
 
-      {/* Chatbot launcher — functionality will be added later */}
-      <button
-        type="button"
-        aria-label="Portfolio AI assistant coming soon"
-        title="Portfolio AI assistant coming soon"
-        disabled
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 cursor-not-allowed items-center justify-center rounded-full border border-blue-300/30 bg-blue-600 text-white shadow-xl shadow-blue-950/50"
-      >
-        <Bot size={25} />
+      <button className={`chat-launcher ${chatOpen ? "launcher-open" : ""}`} onClick={() => setChatOpen((open) => !open)} aria-label={chatOpen ? "Close portfolio assistant" : "Open portfolio assistant"} title="Ask the portfolio assistant">
+        {chatOpen ? <X size={22} /> : <Bot size={24} />}
+        <span className="launcher-ping" />
       </button>
+
+      {chatOpen && (
+        <aside className="chat-panel" aria-label="Portfolio assistant">
+          <div className="chat-header"><div className="chat-avatar"><Bot size={19} /></div><div><strong>Portfolio Assistant</strong><span><i /> Available for questions</span></div><button onClick={() => setChatOpen(false)} aria-label="Close chat"><X size={18} /></button></div>
+          <div className="chat-messages" aria-live="polite">
+            {chatMessages.map((message, index) => <div key={index} className={`chat-message ${message.from === "user" ? "message-user" : "message-assistant"}`}>{message.text}</div>)}
+            <div className="quick-questions"><button onClick={() => { setChatInput("Tell me about the projects"); }}>Projects</button><button onClick={() => { setChatInput("What are your skills?"); }}>Skills</button><button onClick={() => { setChatInput("How can I contact you?"); }}>Contact</button></div>
+          </div>
+          <form className="chat-form" onSubmit={(event) => { event.preventDefault(); sendMessage(); }}>
+            <input value={chatInput} onChange={(event) => setChatInput(event.target.value)} placeholder="Ask about my work..." aria-label="Ask the portfolio assistant" />
+            <button type="submit" aria-label="Send message"><Send size={17} /></button>
+          </form>
+          <p className="chat-disclaimer">Answers are based on information published on this portfolio.</p>
+        </aside>
+      )}
     </main>
   );
 }
